@@ -1,10 +1,12 @@
 import db from '../db.js';
+import bcrypt from 'bcrypt'
 
 async function signUp (req, res) {
   const user = req.body;
 
   try {
-    await db.collection('users').insertOne({name: user.name, email:user.email});
+    const passwordHash = bcrypt.hashSync(user.password, 10);
+    await db.collection('users').insertOne({...user, password:passwordHash});
     res.sendStatus(201);
   } catch (error) {
     console.log(error);
