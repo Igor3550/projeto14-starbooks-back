@@ -6,6 +6,11 @@ const signUpSchema = joi.object({
   password:joi.string().required()
 });
 
+const signInSchema = joi.object({
+  email:joi.string().email().required(),
+  password:joi.string().required()
+});
+
 function signUpMiddleware (req, res, next) {
   const user = req.body;
   const validation = signUpSchema.validate(user);
@@ -16,6 +21,17 @@ function signUpMiddleware (req, res, next) {
   next()
 }
 
+function signInMiddleware (req, res, next) {
+  const user = req.body;
+  const validation = signInSchema.validate(user);
+  if(validation.error){
+    const error = validation.error.details[0].message
+    return res.status(422).send(error);
+  }
+  next()
+}
+
 export {
-  signUpMiddleware
+  signUpMiddleware,
+  signInMiddleware
 }

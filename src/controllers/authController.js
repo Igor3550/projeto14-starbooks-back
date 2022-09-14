@@ -17,11 +17,15 @@ async function signUp (req, res) {
   }
 }
 
-function signIn (req, res) {
+async function signIn (req, res) {
   const user = req.body;
   try {
+    const existentUser = await db.collection('users').findOne({email:user.email});
+    if(!existentUser) return res.status(422).send("Usuário e/ou senha invalido(s)!");
+    if(!bcrypt.compareSync(user.password, existentUser.password)) return res.status(422).send("Usuário e/ou senha invalido(s)!");
     const token = uuid();
-    const existentUser = {}
+    db.collection('sessions').insertOne({token, userId:existentUser._id})
+    res.send(token);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
@@ -29,5 +33,6 @@ function signIn (req, res) {
 }
 
 export {
-  signUp
+  signUp,
+  signIn
 }
