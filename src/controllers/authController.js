@@ -14,6 +14,17 @@ async function signUp (req, res) {
   }
 }
 
+function signIn (req, res) {
+  const user = req.body;
+  try {
+    const token = uuid();
+    const existentUser = {}
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+}
+
 export {
   signUp
 }
