@@ -4,7 +4,14 @@ const bookSchema = joi.object({
 	title: joi.string().required().trim(),
 	autor: joi.string().required().trim(),
 	genre: joi.string().required().trim(),
+	publisher: joi.string().required().trim(),
+	publication: joi.string().required().trim(),
+	language: joi.string().required().trim(),
 	description: joi.string().required().trim(),
+	pages: joi.string().required().trim(),
+	translators: joi.string(),
+	ISBN: joi.string().required(),
+	dimensions: joi.string().required(),
 	image: joi
 		.string()
 		.uri()

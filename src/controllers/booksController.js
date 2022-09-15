@@ -32,6 +32,7 @@ async function postBook(req, res) {
 		}
 
 		await db.collection("books").insertOne(book);
+		res.sendStatus(201);
 	} catch (err) {
 		console.error(err);
 		res.sendStatus(500);
