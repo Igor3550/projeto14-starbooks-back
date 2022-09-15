@@ -2,7 +2,7 @@ import db from "../db.js";
 import bookSchema from "../schemas/bookSchema.js";
 
 async function getBooks(req, res) {
-	const genre = req.params;
+	const genre = req.query;
 
 	try {
 		const books = await db.collection("books").find().toArray();
