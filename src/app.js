@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRouter from "./routers/authRouter.js";
-import booksRouter from "./routers/booksRouter";
+import booksRouter from "./routers/booksRouter.js";
 
 const app = express();
 app.use(express.json());
