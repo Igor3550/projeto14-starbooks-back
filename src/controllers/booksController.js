@@ -2,19 +2,18 @@ import db from "../db.js";
 import bookSchema from "../schemas/bookSchema.js";
 
 async function getBooks(req, res) {
-	const genre = req.query;
+	const genre = req.query.genre;
 
 	try {
 		const books = await db.collection("books").find().toArray();
 
 		if (genre) {
-			const filteredBooks = books.filter(
-				(el) => el.genre === genre.toLowerCase(),
-			);
+			const filteredBooks = books.filter((el) => el.genre === genre);
+			console.log(genre);
 			return res.send(filteredBooks);
+		} else {
+			res.send(books);
 		}
-
-		res.send(books);
 	} catch (err) {
 		console.error(err);
 		res.sendStatus(500);
