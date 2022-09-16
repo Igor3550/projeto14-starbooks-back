@@ -1,8 +1,11 @@
+import { ObjectId } from "mongodb";
 import db from "../db.js";
 import bookSchema from "../schemas/bookSchema.js";
 
 async function getBooks(req, res) {
-	const genre = req.query.genre;
+	const genre = req.body.genre;
+	const BookId = req.query.id;
+	console.log(BookId);
 
 	try {
 		const books = await db.collection("books").find().toArray();
@@ -11,6 +14,9 @@ async function getBooks(req, res) {
 			const filteredBooks = books.filter((el) => el.genre === genre);
 			console.log(genre);
 			return res.send(filteredBooks);
+		} else if (BookId) {
+			const filteredBook = books.filter((el) => el._id.toString() === BookId);
+			return res.send(filteredBook);
 		} else {
 			res.send(books);
 		}
