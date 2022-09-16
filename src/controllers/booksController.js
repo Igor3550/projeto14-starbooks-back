@@ -1,11 +1,9 @@
-import { ObjectId } from "mongodb";
 import db from "../db.js";
 import bookSchema from "../schemas/bookSchema.js";
 
 async function getBooks(req, res) {
 	const genre = req.body.genre;
 	const BookId = req.query.id;
-	console.log(BookId);
 
 	try {
 		const books = await db.collection("books").find().toArray();
