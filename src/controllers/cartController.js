@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import db from "../db.js";
 
 async function addOnCart (req, res) {
@@ -10,6 +11,22 @@ async function addOnCart (req, res) {
     if(existentInCart.length > 0) return res.status(409).send('Item já existente no carrinho!')
     await db.collection('cart').insertOne({userId:user._id, bookId, book})
     res.sendStatus(201)
+  } catch (error) {
+    console.log(error)
+    res.sendStatus(500)
+  }
+}
+
+async function deleteItem (req, res) {
+  const user = res.locals.user
+  const { bookId } = req.params
+  try {
+    const userCart = await db.collection('cart').find({userId: user._id}).toArray()
+    const existentInCart = userCart.filter((item) => item.bookId === bookId);
+    if(existentInCart.length === 0) return res.status(409).send('Item não encontrado!')
+
+    await db.collection('cart').deleteOne({_id: existentInCart[0]._id})
+    res.sendStatus(200)
   } catch (error) {
     console.log(error)
     res.sendStatus(500)
@@ -30,5 +47,6 @@ async function getCartItems (req, res) {
 
 export {
   addOnCart,
-  getCartItems
+  getCartItems,
+  deleteItem
 }
