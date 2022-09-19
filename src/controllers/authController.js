@@ -24,8 +24,9 @@ async function signIn (req, res) {
     if(!existentUser) return res.status(422).send("Usuário e/ou senha invalido(s)!");
     if(!bcrypt.compareSync(user.password, existentUser.password)) return res.status(422).send("Usuário e/ou senha invalido(s)!");
     const token = uuid();
+    delete existentUser.password;
     db.collection('sessions').insertOne({token, userId:existentUser._id})
-    res.send(token);
+    res.send({token, user:existentUser});
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
